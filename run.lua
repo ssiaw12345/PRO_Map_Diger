@@ -2,15 +2,16 @@ destination="Vermilion City"
 Mount_name=""
 Water_Mount_name=""
 
-map_counter=1
---maps[current_map][next_map][x1,y1,x2,y2,if_use_dig_to_teleport]
+routes_counter=1
+--maps[current_map][next_map][entrance_Num][x1,y1,x2,y2,if_use_dig_to_teleport]
 maps={}
 
 maps=["Vermilion City"]={};
-maps=["Vermilion City"]["Route 6"]={x1,y1,x2,y2,false}
---TO-DO
+maps=["Vermilion City"]["Route 6"]={{x1,y1,x2,y2,false}}
 
-routes=["Kanto-Johto-Sinnoh"]={"Route 6",""}
+--TO-DO
+--routes[route][next_map][map_name][entrance_Num]
+routes=["Kanto-Johto-Sinnoh"]={{"Route 6",1},{}}
 
 function onStart()
 	start_place=getMapName()
@@ -43,12 +44,15 @@ function onPathAction()
     current_map=getMapName()
 	print("current_map")
 	print(current_map)
-	next_map=routes[direction][map_counter]
-    to_next_map(current_map,next_map)
+	next_map=routes[direction][routes_counter][1]
+	entrance_Num=routes[direction][routes_counter][2]
+    to_next_map(current_map,next_map,entrance_Num)
 	print("after function to_next_map")
 	print(getMapName())
-	if current_map~=getMapName() then
-		map_counter=map_counter+1
+	if current_map~=getMapName() and next_map==getMapName() then
+		routes_counter=routes_counter+1
+	else
+		fatal("In the wrong map")
 	end
     -- etc.
 end
@@ -69,6 +73,9 @@ function onBattleAction()
 end
 
 local function choose_route(start_place,destination)
+--[[
+direction : 1.Kanto-Johto-Sinnoh; 2.Johto-Kanto-Sinnoh;3.Sinnoh-Kanto-Johto;4.Sinnoh-Johto-Kanto
+]]--
 	if start_place=="Vermilion City" then
 		return "Kanto-Johto-Shinoh"
 	elseif start_place=="Olivine City" then
@@ -81,13 +88,10 @@ local function choose_route(start_place,destination)
 	end
 end
 
-local function to_next_map(current_map,next_map)
---[[
-direction : 1.Kanto-Johto-Sinnoh; 2.Johto-Kanto-Sinnoh;3.Sinnoh-Kanto-Johto;4.Sinnoh-Johto-Kanto
-]]--
+local function to_next_map(current_map,next_map,entrance_Num)
 	local cor
 	for i =1,5 do
-		cor[i]=maps[current_map][next_map][i]
+		cor[i]=maps[current_map][next_map][entrance_Num][i]
 	end
 	if cor[5] then
 		local digIndex = 0
