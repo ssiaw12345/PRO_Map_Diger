@@ -41,8 +41,12 @@ function onPathAction()
     end
     -- If there are no available dig spots on this map, or that is to say, digSpots[1] == nil, execute the code below
     current_map=getMapName()
+	print("current_map")
+	print(current_map)
 	next_map=routes[direction][map_counter]
     to_next_map(current_map,next_map)
+	print("after function to_next_map")
+	print(getMapName())
 	if current_map~=getMapName() then
 		map_counter=map_counter+1
 	end
