@@ -3,11 +3,12 @@ Mount_name=""
 Water_Mount_name=""
 
 routes_counter=1
---maps[current_map][next_map][entrance_Num][x1,y1,x2,y2,if_use_dig_to_teleport]
+--maps[current_map][next_map][entrance_Num][x1,y1,x2,y2,teleport_num]
+--teleport_num: -1 for just go, 0 for dig, number larger than 0 are the choise when NPC ask you where to go
 maps={}
 
 maps=["Vermilion City"]={};
-maps=["Vermilion City"]["Route 6"]={{x1,y1,x2,y2,false}}
+maps=["Vermilion City"]["Route 6"]={{x1,y1,x2,y2,-1}}
 
 --TO-DO
 --routes[route][next_map][map_name][entrance_Num]
@@ -93,14 +94,16 @@ local function to_next_map(current_map,next_map,entrance_Num)
 	for i =1,5 do
 		cor[i]=maps[current_map][next_map][entrance_Num][i]
 	end
-	if cor[5] then
+	if cor[5]==0 then
 		local digIndex = 0
 		for i = getTeamSize() , 1 , -1 do
 		if hasMove(i, "Dig") and getPokemonHappiness(i) >= 150 then digIndex = i end
 		end
 		pushDialogAnswer(digIndex)
 		talkToNpcOnCell(cor[1],cor[2]) 
-	else
+	elseif cor[5]==-1 then
 		moveToRectangle(cor[1],cor[2], cor[3], cor[4])
-	
+	else
+		pushDialogAnswer(cor[5])
+		talkToNpcOnCell(cor[1],cor[2])
 end
