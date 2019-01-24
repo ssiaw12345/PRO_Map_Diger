@@ -10,7 +10,7 @@ maps=["Vermilion City"]={};
 maps=["Vermilion City"]["Route 6"]={x1,y1,x2,y2,false}
 --TO-DO
 
-routes=["Kanto-Johto-Shinoh"]={"Route 6",""}
+routes=["Kanto-Johto-Sinnoh"]={"Route 6",""}
 
 function onStart()
 	start_place=getMapName()
@@ -79,7 +79,7 @@ end
 
 local function to_next_map(current_map,next_map)
 --[[
-direction : 1.Kanto-Johto-Shinoh; 2.Johto-Kanto-Shinoh;3.Shinoh-Kanto-Johto;4.Shinoh-Johto-Kanto
+direction : 1.Kanto-Johto-Sinnoh; 2.Johto-Kanto-Sinnoh;3.Sinnoh-Kanto-Johto;4.Sinnoh-Johto-Kanto
 ]]--
 	local cor
 	for i =1,5 do
